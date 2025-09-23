@@ -17,10 +17,10 @@ header {
     overflow: hidden;
 }
 
-.grid-div {
-    /* gap: 20rem; */
-    /* text-align: center; */
-}
+/* .grid-div {
+    gap: 20rem;
+    text-align: center;
+} */
 
 .grid-ruta {
     border: 1px solid red;  
