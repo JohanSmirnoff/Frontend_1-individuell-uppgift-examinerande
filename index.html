@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smirnoff's gänghäng</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kings&display=swap" rel="stylesheet">
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -45,15 +48,17 @@
                 </p>
             </div>
             <div class="form-container">
-                <form action="Skicka inlägg" method="post">
+                <form method="post" id="post-form">
                     <div>
-                        <label for="titel" >Titel på inlägget: </label>
-                        <input type="text" name="titel">
+                        <label for="user-title" >Titel på inlägget: </label>
+                        <input type="text" id="user-title" name="user-title" required>
                     </div>
                     <div>
-                        <label for="meddelande">Inlägg: </label>
-                        <textarea name="meddelande" id="meddelande" rows="5" columns="70"></textarea>
+                        <label for="user-message">Inlägg: </label>
+                        <textarea name="user-message" id="user-message" rows="5" cols="70" required></textarea>
                     </div>
+                    <input type="submit" id="send-button" value="Lägg upp">
+                    <input type="reset" id="reset-button">
                 </form>
             </div>
             <h5>
@@ -61,7 +66,6 @@
             </h5>
             <div class="main-container">
 
-                
             </div>
         </main>
         

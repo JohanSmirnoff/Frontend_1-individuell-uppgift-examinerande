@@ -17,6 +17,10 @@ header {
     overflow: hidden;
 }
 
+#h-headline {
+    font-family: "Kings", Arial, Helvetica, sans-serif;
+}
+
 /* .grid-div {
     gap: 20rem;
     text-align: center;
