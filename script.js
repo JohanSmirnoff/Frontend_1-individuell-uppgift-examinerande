@@ -19,13 +19,24 @@ formBox.addEventListener("submit", (e) => {
     mainBox.appendChild(ppp)
     console.log(ppp)
     
-    
+
     
 })
 
+// notes för imorgon
+
+// lägg in all data som skickas av formuläret i en array, 
 
 
 
+
+// Arrayen håller alla poster (t.ex. flera fält från ditt form).
+
+// Varje post är ett objekt: { id, title, message, time, ... }.
+
+// Vid submit: skapa ett objekt → pusha in i arrayen → spara arrayen i localStorage → rendera posten.
+
+// Vid sidladdning: läs från localStorage → rendera alla.
 
 
 
