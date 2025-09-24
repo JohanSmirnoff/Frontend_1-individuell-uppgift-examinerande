@@ -1,13 +1,27 @@
-body {
-    background-color: black;
-    color: white;
+/* * {
     margin: 0;
     padding: 0;
+} */
+
+body {
+    /* background-color: #e3e0cf; */
+    color: white;
+    font-family: 'Segoe UI', Helvetica, Tahoma;
+    margin: 0;
+    padding: 0;
+    background-image: url(background_picture.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 header {
-    background-color: grey;
-    padding: 1rem;
+    /* padding: 1rem; */
+    /* box-shadow: ; */
+    border-bottom: 1px solid orange;
+    background: linear-gradient(180deg, rgba(191, 113, 44, 0.5), rgba(44, 191, 149, 0.5) 80%);
+    backdrop-filter: blur(5px);
 }
 
 .header-container {
@@ -17,17 +31,28 @@ header {
     overflow: hidden;
 }
 
-#h-headline {
-    font-family: "Kings", Arial, Helvetica, sans-serif;
+#h-icons, #h-info-right {
+    text-align: left;
+    padding-left: 1.2rem;
 }
 
-/* .grid-div {
-    gap: 20rem;
-    text-align: center;
-} */
+#h-login, #h-info-left {
+    text-align: right;
+    padding-right: 1.2rem;
+}
+
+#h-headline {
+    font-family: "Kings", Helvetica, sans-serif;
+    padding-top: 0.6rem;
+}
+
+.grid-div {
+    /* gap: 1rem; */
+    /* text-align: center; */
+}
 
 .grid-ruta {
-    border: 1px solid red;  
+    border: 1px solid black;
 }
 
 #grid-row1 {
@@ -50,6 +75,27 @@ h1 {
     margin: 0;
 }
 
+#main-rubrik > p {
+    font-size: 2rem;
+    font-family: "Kings", Helvetica, sans-serif;
+    text-align: center;
+    border: 1px solid white;
+    display: inline-block;
+    
+    
+}
+
 .main-container {
     display: flex;
+    border: 1px solid white;
+    justify-content: center;
+    padding: 2rem;
+    height: 80vh;
+}
+
+.blog-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightblue;
+    padding: 2rem;
 }

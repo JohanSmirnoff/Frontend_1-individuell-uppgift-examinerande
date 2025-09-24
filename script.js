@@ -1,12 +1,11 @@
 const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
-// const postForm = document.getElementById("post-form")
 const sendButton = document.getElementById("send-button")
 const resetButton = document.getElementById("reset-button")
 
 const blogPosts = []
 
-// En funktion för att skicka in userinput i en array, (trimma till små bokstäver) 
+// En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
 function addUserInput(input) {
     return {
         id: crypto.randomUUID(),
@@ -17,25 +16,26 @@ function addUserInput(input) {
     }
 }
 
+// Funktion för att rendera och skapa alla element som behövs för att få nån output i HTML
 function renderUserInput(blogPost) {
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
+    const timeStamp = document.createElement("p")
     const userName = document.createElement("p")
     const userTitle = document.createElement("p")
     const userMessage = document.createElement("p")
-    const timeStamp = document.createElement("p")
 
     userName.textContent = blogPost.author
     userTitle.textContent = blogPost.title
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
     
-    blogDiv.append(userName, userTitle, userMessage, timeStamp)
+    blogDiv.append(timeStamp, userName, userTitle, userMessage)
     mainDiv.appendChild(blogDiv)
 }
 
-
+// Eventlistener för formuläret du fyller i för själv inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
