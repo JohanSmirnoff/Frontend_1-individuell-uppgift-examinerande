@@ -46,10 +46,10 @@ header {
     padding-top: 0.6rem;
 }
 
-.grid-div {
-    /* gap: 1rem; */
-    /* text-align: center; */
-}
+/* .grid-div {
+    gap: 1rem;
+    text-align: center;
+} */
 
 .grid-ruta {
     border: 1px solid black;
