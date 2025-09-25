@@ -43,6 +43,8 @@ formBox.addEventListener("keydown", (e) => {
     }
 })
 
+//test
+
 // Eventlistener för formuläret du fyller i för själv inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
