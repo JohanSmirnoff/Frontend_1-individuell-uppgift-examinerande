@@ -31,8 +31,8 @@ function renderUserInput(blogPost) {
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
     
-    blogDiv.append(timeStamp, userName, userTitle, userMessage)
-    mainDiv.appendChild(blogDiv)
+    mainDiv.prepend(blogDiv)
+    blogDiv.prepend(timeStamp, userName, userTitle, userMessage)
 }
 
 // En till funktion för att trigga submit i formuläret vid keydown "enter", endast i message-rutan
@@ -45,7 +45,7 @@ formBox.addEventListener("keydown", (e) => {
 
 //test
 
-// Eventlistener för formuläret du fyller i för själv inläggen
+// Eventlistener för formuläret du fyller i för själva inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
@@ -64,15 +64,6 @@ formBox.addEventListener("submit", (e) => {
 
 
 
-
-
-
-
-
-
-// notes för imorgon
-
-// lägg in all data som skickas av formuläret i en array, 
 
 
 
