@@ -35,6 +35,14 @@ function renderUserInput(blogPost) {
     mainDiv.appendChild(blogDiv)
 }
 
+// En till funktion för att trigga submit i formuläret vid keydown "enter", endast i message-rutan
+formBox.addEventListener("keydown", (e) => {
+    if (e.key == "Enter" && e.target.tagName === "TEXTAREA") {
+        e.preventDefault()
+        formBox.requestSubmit()
+    }
+})
+
 // Eventlistener för formuläret du fyller i för själv inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
