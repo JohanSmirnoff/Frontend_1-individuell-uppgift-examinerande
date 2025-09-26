@@ -9,8 +9,8 @@ body {
     font-family: 'Segoe UI', Helvetica, Tahoma;
     margin: 0;
     padding: 0;
-    /* background-image: url(background_picture.png); */
-    background-color: black;
+    background-image: url(background_picture.png);
+    /* background-color: black; */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -78,17 +78,20 @@ h1 {
 }
 
 #main-rubrik {
-    background: rgba(0, 0, 0, 0.5);
     text-align: center;
-    margin: 2rem;
+    margin: 1.5rem;
     padding-bottom: 1.5rem;
     justify-content: center;
 }
 
 #main-rubrik p {
+    display: inline;
     font-size: 3rem;
     font-family: "Kings", Helvetica, sans-serif;
     text-align: center;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    padding: 0 0.3rem 0 0.3rem;
 }
 
 .main-container {

@@ -19,8 +19,11 @@
             <div class="grid-ruta">
                 <h4 id="h-welcome">Välkommen tillbaks choomba!</h4>
             </div>
-            <div class="grid-ruta">
-                <h4 id="h-login">Namn på användare:</h4>
+            <div class="grid-ruta" id="grid-ruta-user">
+                <form method="post" id="user-form">
+                    <label for="user-name" id="show-user-name">Namn på användare: </label>
+                    <input type="text" id="user-name" name="user-name" required placeholder="Användarnamn:">
+                </form>
             </div>
         </div>
         <div class="grid-div" id="grid-row2">
@@ -50,10 +53,6 @@
             </div>
             <div class="form-container">
                 <form method="post" id="post-form">
-                    <div>
-                        <label for="user-name" >Namn: </label>
-                        <input type="text" id="user-name" name="user-name" required>
-                    </div>
                     <div>
                         <label for="user-title" >Titel på inlägget: </label>
                         <input type="text" id="user-title" name="user-title" required>

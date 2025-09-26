@@ -1,15 +1,36 @@
+const userBox = document.getElementById("user-form")
+// const usernameLabel = document.createElement("show-user-name")
 const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
 const sendButton = document.getElementById("send-button")
 const resetButton = document.getElementById("reset-button")
 
 const blogPosts = []
+let currentUser = ""
+
+//Funktion för att bara sätta username
+function addUserInput(addUserName) {
+    return {
+        author: addUserName.get("user-name").toString().trim()
+    }
+}
+
+//Funktion för att rendera bara username
+function renderUserInput(renderUserName) {
+    let userP = document.getElementById("user-display")
+    if (!userP) {
+        userP =document.createElement("p")
+        userP.id ="user-display"
+        userBox.appendChild(userP)
+    }
+    userP.textContent = renderUserName.author
+}
 
 // En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
-function addUserInput(input) {
+function addBlogInput(input) {
     return {
         id: crypto.randomUUID(),
-        author: input.get("user-name"),
+        author: currentUser,
         title: input.get("user-title"),
         message: input.get("user-message"),
         timestamp: new Date().toLocaleTimeString()
@@ -17,7 +38,7 @@ function addUserInput(input) {
 }
 
 // Funktion för att rendera och skapa alla element som behövs för att få nån output i HTML
-function renderUserInput(blogPost) {
+function renderBlogInput(blogPost) {
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
@@ -43,20 +64,41 @@ formBox.addEventListener("keydown", (e) => {
     }
 })
 
-//test
+// Testevent för namerutan
+userBox.addEventListener("submit", (e) => {
+    e.preventDefault() 
+    const userInput = new FormData(userBox)
+    const author = userInput.get("user-name")
+    const createdUserName = addUserInput(userInput)
+    if (!author) {
+        alert("Skriv in ett användarnamn")
+        return
+    }
+    if (author.toLocaleLowerCase() === currentUser.toLocaleLowerCase()) {
+        alert("Du har skrivit in samma namn igen")
+        return
+    }
+    currentUser = (createdUserName.author)
+    renderUserInput({author: currentUser})
+    userBox.reset()
+})
 
 // Eventlistener för formuläret du fyller i för själva inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
+    // const userInput = new FormData(userBox)
     const author = formInput.get("user-name")
     const title = formInput.get("user-title")
     const message = formInput.get("user-message")
     
-    const createdBlogPost = addUserInput(formInput)
+    if (!currentUser) {
+        alert("Skriv in ett användarnamn uppe i högra hörnet och tryck enter för att spara det.")
+        return
+    }
+    const createdBlogPost = addBlogInput(formInput)
     blogPosts.push(createdBlogPost)
-    renderUserInput(createdBlogPost)
-    
+    renderBlogInput(createdBlogPost)
     formBox.reset()
     console.log(blogPosts)
 })
