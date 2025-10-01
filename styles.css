@@ -1,7 +1,6 @@
-/* * {
-    margin: 0;
-    padding: 0;
-} */
+* {
+    box-sizing: border-box;
+}
 
 body {
     /* background-color: #e3e0cf; */
@@ -99,12 +98,16 @@ h1 {
     border: 1px solid white;
     justify-content: center;
     padding: 2rem;
-    height: 80vh;
+    /* height: 80vh; */
 }
 
 .blog-container {
     display: flex;
     flex-direction: column;
+    min-width: 20%;
+    min-height: 20%;
     border: 1px solid lightblue;
-    padding: 2rem;
+    border-radius: 2rem;
+    background: #272e29;
+    padding: 1rem;
 }

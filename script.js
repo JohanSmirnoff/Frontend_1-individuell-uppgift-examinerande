@@ -47,7 +47,7 @@ function renderBlogInput(blogPost) {
     const userTitle = document.createElement("p")
     const userMessage = document.createElement("p")
 
-    userName.textContent = blogPost.author
+    userName.textContent = `Användare: ${blogPost.author}`
     userTitle.textContent = blogPost.title
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
