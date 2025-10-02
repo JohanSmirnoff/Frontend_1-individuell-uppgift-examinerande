@@ -91,16 +91,33 @@ h1 {
     padding: 0 0.3rem 0 0.3rem;
 }
 
+.form-container, .main-container {
+    max-width: 800px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
 .form-container form {
+    flex-wrap: wrap;
     display: flex;
     flex-direction: row;
     justify-content: center;
     background-color: orange;
-    border-radius: 10rem;
+    border-radius: 5rem;
     min-width: 10rem;
     padding: 1rem;
-    /* color: white; */
     gap: 0.3rem;
+}
+
+@media (max-width: 768px) {
+    .form-container form {
+        flex-direction: column;
+        border-radius: 1rem;
+    }
+    #form-title, #form-messge {
+        align-items: stretch;
+        justify-content: initial;
+    }
 }
 
 #form-title, #form-message {
