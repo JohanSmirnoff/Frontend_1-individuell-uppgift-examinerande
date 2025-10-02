@@ -1,5 +1,4 @@
 const userBox = document.getElementById("user-form")
-// const usernameLabel = document.createElement("show-user-name")
 const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
 const sendButton = document.getElementById("send-button")
@@ -17,13 +16,13 @@ function addUserInput(addUserName) {
 
 //Funktion för att rendera bara username
 function renderUserInput(renderUserName) {
-    let userP = document.getElementById("user-display")
-    if (!userP) {
-        userP =document.createElement("p")
-        userP.id ="user-display"
-        userBox.appendChild(userP)
+    let userDisplay = document.getElementById("user-display")
+    if (!userDisplay) {
+        userDisplay =document.createElement("p")
+        userDisplay.id ="user-display"
+        userBox.appendChild(userDisplay)
     }
-    userP.textContent = renderUserName.author
+    userDisplay.textContent = renderUserName.author
 }
 
 // En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
@@ -106,13 +105,6 @@ formBox.addEventListener("submit", (e) => {
 
 
 
-
-
-
-
-// Arrayen håller alla poster (t.ex. flera fält från ditt form).
-
-// Varje post är ett objekt: { id, title, message, time, ... }.
 
 // Vid submit: skapa ett objekt → pusha in i arrayen → spara arrayen i localStorage → rendera posten.
 
