@@ -7,6 +7,13 @@ const resetButton = document.getElementById("reset-button")
 const blogPosts = []
 let currentUser = ""
 
+
+//Start på localstorage
+const BLOG_KEY = "blogPosts"
+const USER_KEY = "currentUser"
+
+// function loadStorage()
+
 //Funktion för att bara sätta username
 function addUserInput(addUserName) {
     return {
@@ -18,7 +25,7 @@ function addUserInput(addUserName) {
 function renderUserInput(renderUserName) {
     let userDisplay = document.getElementById("user-display")
     if (!userDisplay) {
-        userDisplay =document.createElement("p")
+        userDisplay = document.createElement("p")
         userDisplay.id ="user-display"
         userBox.appendChild(userDisplay)
     }
