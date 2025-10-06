@@ -7,21 +7,40 @@ const resetButton = document.getElementById("reset-button")
 const blogPosts = []
 let currentUser = ""
 
+// Start på localstorage
+const BLOG_STORAGE = "blogPosts"
+const USER_STORAGE = "currentUser"
 
-//Start på localstorage
-const BLOG_KEY = "blogPosts"
-const USER_KEY = "currentUser"
+// Spara localStorage
+function saveStorage() {
+    localStorage.setItem(BLOG_STORAGE, JSON.stringify(blogPosts))
+    localStorage.setItem(USER_STORAGE, currentUser)
+}
 
-// function loadStorage()
+// Ladda localStorage
+function loadStorage() {
+    blogPosts.length = 0
+    const savedPosts = JSON.parse(localStorage.getItem(BLOG_STORAGE) || "[]")
+    blogPosts.push(...savedPosts)
+    currentUser = localStorage.getItem(USER_STORAGE) || ""
+}
 
-//Funktion för att bara sätta username
+// Först ta bort gamla och rendera ut nya posts
+function renderAllPosts() {
+    document.querySelectorAll(".blog-container").forEach(element => element.remove())
+    blogPosts.slice().forEach(renderBlogInput)
+    if (currentUser) renderUserInput({author: currentUser})
+}
+
+
+// Funktion för att bara sätta username
 function addUserInput(addUserName) {
     return {
         author: addUserName.get("user-name").toString().trim()
     }
 }
 
-//Funktion för att rendera bara username
+// Funktion för att rendera bara username
 function renderUserInput(renderUserName) {
     let userDisplay = document.getElementById("user-display")
     if (!userDisplay) {
@@ -33,18 +52,18 @@ function renderUserInput(renderUserName) {
 }
 
 // En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
-function addBlogInput(input) {
+function addBlogInput(addBlogInfo) {
     return {
         id: crypto.randomUUID(),
         author: currentUser,
-        title: input.get("user-title"),
-        message: input.get("user-message"),
+        title: addBlogInfo.get("user-title"),
+        message: addBlogInfo.get("user-message"),
         timestamp: new Date().toLocaleTimeString()
     }
 }
 
 // Funktion för att rendera och skapa alla element som behövs för att få nån output i HTML
-function renderBlogInput(blogPost) {
+function renderBlogInput(renderBlogPost) {
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
@@ -53,10 +72,10 @@ function renderBlogInput(blogPost) {
     const userTitle = document.createElement("p")
     const userMessage = document.createElement("p")
 
-    userName.textContent = `Användare: ${blogPost.author}`
-    userTitle.textContent = `Titel: ${blogPost.title}`
-    userMessage.textContent = blogPost.message
-    timeStamp.textContent = blogPost.timestamp
+    userName.textContent = `Användare: ${renderBlogPost.author}`
+    userTitle.textContent = `Titel: ${renderBlogPost.title}`
+    userMessage.textContent = renderBlogPost.message
+    timeStamp.textContent = renderBlogPost.timestamp
     
     mainDiv.prepend(blogDiv)
     blogDiv.prepend(timeStamp, userName, userTitle, userMessage)
@@ -86,6 +105,7 @@ userBox.addEventListener("submit", (e) => {
     }
     currentUser = (createdUserName.author)
     renderUserInput({author: currentUser})
+    saveStorage()
     userBox.reset()
 })
 
@@ -94,8 +114,8 @@ formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
     const author = formInput.get("user-name")
-    const title = formInput.get("user-title")
-    const message = formInput.get("user-message")
+    const title = (formInput.get("user-title") || "")
+    const message = (formInput.get("user-message") || "")
     
     if (!currentUser) {
         alert("Skriv in ett användarnamn uppe i högra hörnet och tryck enter för att spara det.")
@@ -104,9 +124,13 @@ formBox.addEventListener("submit", (e) => {
     const createdBlogPost = addBlogInput(formInput)
     blogPosts.push(createdBlogPost)
     renderBlogInput(createdBlogPost)
+    saveStorage()
     formBox.reset()
     console.log(blogPosts)
 })
+
+loadStorage()
+renderAllPosts()
 
 
 
