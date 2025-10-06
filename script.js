@@ -54,7 +54,7 @@ function renderBlogInput(blogPost) {
     const userMessage = document.createElement("p")
 
     userName.textContent = `Användare: ${blogPost.author}`
-    userTitle.textContent = blogPost.title
+    userTitle.textContent = `Titel: ${blogPost.title}`
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
     
@@ -62,7 +62,7 @@ function renderBlogInput(blogPost) {
     blogDiv.prepend(timeStamp, userName, userTitle, userMessage)
 }
 
-// En till funktion för att trigga submit i formuläret vid keydown "enter", endast i message-rutan
+// En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda.
 formBox.addEventListener("keydown", (e) => {
     if (e.key == "Enter" && e.target.tagName === "TEXTAREA") {
         e.preventDefault()
@@ -70,7 +70,7 @@ formBox.addEventListener("keydown", (e) => {
     }
 })
 
-// Testevent för namerutan
+// Event för namerutan
 userBox.addEventListener("submit", (e) => {
     e.preventDefault() 
     const userInput = new FormData(userBox)
@@ -93,7 +93,6 @@ userBox.addEventListener("submit", (e) => {
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
-    // const userInput = new FormData(userBox)
     const author = formInput.get("user-name")
     const title = formInput.get("user-title")
     const message = formInput.get("user-message")
