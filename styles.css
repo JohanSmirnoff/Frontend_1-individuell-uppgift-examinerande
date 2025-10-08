@@ -181,6 +181,22 @@ h1 {
     padding-right: 0.5rem;
 }
 
-p {
-    margin: 0.5rem;
+.blogHeader-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
 }
+
+.blogHeader-container p {
+    display: inline;
+    font-weight: bold;
+    /* margin: 0.5rem; */
+}
+
+#remove-post-button {
+    width: 2rem;
+    height: 2rem;
+}
+
+

@@ -1,3 +1,5 @@
+// const { createElement } = require("react")
+
 const userBox = document.getElementById("user-form")
 const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
@@ -67,6 +69,16 @@ function renderBlogInput(renderBlogPost) {
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
+    const blogHeaderDiv = document.createElement("div")
+    blogHeaderDiv.className = "blogHeader-container"
+
+    const removePostButton = document.createElement("button")
+    removePostButton.className = "remove-post-button"
+    removePostButton.type = "button"
+    removePostButton.dataset.id = renderBlogPost.id
+    removePostButton.textContent = "X"
+    removePostButton.hidden = renderBlogPost.author !== currentUser
+    
     const timeStamp = document.createElement("p")
     const userName = document.createElement("p")
     const userTitle = document.createElement("p")
@@ -76,9 +88,24 @@ function renderBlogInput(renderBlogPost) {
     userTitle.textContent = `Titel: ${renderBlogPost.title}`
     userMessage.textContent = renderBlogPost.message
     timeStamp.textContent = renderBlogPost.timestamp
-    
+
+    // Eventlistener för removePostButton-knappen inuti renderBlogInput
+    removePostButton.addEventListener("click", () => {
+        if (renderBlogPost.author !== currentUser) {
+            alert("Du kan inte ta bort andras inlägg, duh!")
+            return
+        }
+        const postIndex = blogPosts.findIndex(p => p.id === renderBlogPost.id)
+        if (postIndex === -1) return
+        if (!confirm("Vill du verkligen ta bort inlägget?")) return
+        blogPosts.splice(postIndex, 1)
+        saveStorage()
+        renderAllPosts()
+    })
+
     mainDiv.prepend(blogDiv)
-    blogDiv.prepend(timeStamp, userName, userTitle, userMessage)
+    blogHeaderDiv.prepend(timeStamp, removePostButton)
+    blogDiv.prepend(blogHeaderDiv, userName, userTitle, userMessage)
 }
 
 // En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda.
@@ -106,6 +133,7 @@ userBox.addEventListener("submit", (e) => {
     currentUser = (createdUserName.author)
     renderUserInput({author: currentUser})
     saveStorage()
+    renderAllPosts()
     userBox.reset()
 })
 
@@ -131,11 +159,8 @@ formBox.addEventListener("submit", (e) => {
 
 loadStorage()
 renderAllPosts()
+console.log(blogPosts)
 
 
 
 
-
-// Vid submit: skapa ett objekt → pusha in i arrayen → spara arrayen i localStorage → rendera posten.
-
-// Vid sidladdning: läs från localStorage → rendera alla.
