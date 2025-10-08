@@ -36,12 +36,13 @@ githubIcon.addEventListener("click", () => {
 })
 
 // Först ta bort gamla och rendera ut nya posts
+
+// KANSKE ÄNDRA DENNA FUNKTION TILL .replaceChildren I FRAMTIDEN
 function renderAllPosts() {
-    document.querySelectorAll(".blog-container").forEach(element => element.remove())
+    mainDiv.querySelectorAll(".blog-container").forEach(element => element.remove())
     blogPosts.slice().forEach(renderBlogInput)
     if (currentUser) renderUserInput({author: currentUser})
 }
-
 
 // Funktion för att bara sätta username
 function addUserInput(addUserName) {
@@ -62,18 +63,21 @@ function renderUserInput(renderUserName) {
 }
 
 // En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
-function addBlogInput(addBlogInfo) {
+function addBlogInput(blogInfo) {
     return {
         id: crypto.randomUUID(),
         author: currentUser,
-        title: addBlogInfo.get("user-title"),
-        message: addBlogInfo.get("user-message"),
-        timestamp: new Date().toLocaleTimeString()
+        title: blogInfo.get("user-title"),
+        message: blogInfo.get("user-message"),
+        timestamp: new Date().toLocaleTimeString(),
+        likedBy: []
     }
 }
 
 // Funktion för att rendera och skapa alla element som behövs för att få nån output i HTML
-function renderBlogInput(renderBlogPost) {
+function renderBlogInput(blogPost) {
+    blogPost.likedBy ??= [];
+
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
@@ -83,27 +87,41 @@ function renderBlogInput(renderBlogPost) {
     const removePostButton = document.createElement("button")
     removePostButton.className = "remove-post-button"
     removePostButton.type = "button"
-    removePostButton.dataset.id = renderBlogPost.id
+    removePostButton.dataset.id = blogPost.id
     removePostButton.textContent = "X"
-    removePostButton.hidden = renderBlogPost.author !== currentUser
+    removePostButton.hidden = blogPost.author !== currentUser
     
     const timeStamp = document.createElement("p")
     const userName = document.createElement("p")
     const userTitle = document.createElement("p")
     const userMessage = document.createElement("p")
 
-    userName.textContent = `Användare: ${renderBlogPost.author}`
-    userTitle.textContent = `Titel: ${renderBlogPost.title}`
-    userMessage.textContent = renderBlogPost.message
-    timeStamp.textContent = renderBlogPost.timestamp
+    const blogFooterDiv = document.createElement("div")
+    blogFooterDiv.className = "blogFooter-container"
+
+    const likeButton = document.createElement("button")
+    likeButton.type = "button"
+    likeButton.className = "like-button"
+    likeButton.textContent = `<3: ${blogPost.likedBy.length}`
+
+    const commentButton = document.createElement("button")
+    commentButton.type = "button"
+    commentButton.className = "comment-button"
+    commentButton.textContent = "Kommentarer"
+
+
+    userName.textContent = `Användare: ${blogPost.author}`
+    userTitle.textContent = `Titel: ${blogPost.title}`
+    userMessage.textContent = blogPost.message
+    timeStamp.textContent = blogPost.timestamp
 
     // Eventlistener för removePostButton-knappen inuti renderBlogInput
     removePostButton.addEventListener("click", () => {
-        if (renderBlogPost.author !== currentUser) {
+        if (blogPost.author !== currentUser) {
             alert("Du kan inte ta bort andras inlägg, duh!")
             return
         }
-        const postIndex = blogPosts.findIndex(p => p.id === renderBlogPost.id)
+        const postIndex = blogPosts.findIndex(p => p.id === blogPost.id)
         if (postIndex === -1) return
         if (!confirm("Vill du verkligen ta bort inlägget?")) return
         blogPosts.splice(postIndex, 1)
@@ -111,9 +129,26 @@ function renderBlogInput(renderBlogPost) {
         renderAllPosts()
     })
 
+    // Event för likes, använder blogPost.likedBy.indexOf för att leta efter currentUser i arrayen. Push om ej hittad, annars splice
+    likeButton.addEventListener("click", () => {
+        if (!currentUser) {
+            alert("Fyll i ett användarnamn och tryck enter innan du like:ar")
+            return
+        }
+        const likes = blogPost.likedBy.indexOf(currentUser)
+        if (likes === -1) {
+            blogPost.likedBy.push(currentUser)
+        } else {
+            blogPost.likedBy.splice(likes, 1)
+        }
+        saveStorage()
+        renderAllPosts()
+    })
+
     mainDiv.prepend(blogDiv)
     blogHeaderDiv.prepend(timeStamp, removePostButton)
-    blogDiv.prepend(blogHeaderDiv, userName, userTitle, userMessage)
+    blogFooterDiv.prepend(likeButton, commentButton)
+    blogDiv.prepend(blogHeaderDiv, userName, userTitle, userMessage, blogFooterDiv)
 }
 
 // En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda.
