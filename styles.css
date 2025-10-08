@@ -15,8 +15,6 @@ body {
 }
 
 header {
-    /* padding: 1rem; */
-    /* box-shadow: ; */
     border-bottom: 1px solid orange;
     background: linear-gradient(180deg, rgba(191, 113, 44, 0.5), rgba(44, 191, 149, 0.5) 80%);
     backdrop-filter: blur(5px);
@@ -30,9 +28,34 @@ header {
     overflow: hidden;
 }
 
-#h-icons, #h-info-right {
+#h-info-right {
     text-align: left;
     padding-left: 1.2rem;
+}
+
+#grid-ruta-link {
+    display: flex;
+    justify-content: start;
+    padding: 1rem;
+}
+
+#grid-ruta-link a {
+    text-decoration: inherit;
+    color: inherit;
+    transition: transform 0.3s ease-in-out;
+}
+
+#grid-ruta-link a:hover {
+    transform: translateY(8px) translateX(5px) rotate(-10deg);
+}
+
+.spin-icon {
+    animation: spin 0.5s linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 #h-login, #h-info-left {
@@ -43,6 +66,33 @@ header {
 #h-headline {
     font-family: "Kings", Helvetica, sans-serif;
     padding-top: 0.6rem;
+    transition: transform 0.3s ease-in-out
+}
+
+#h-headline:hover {
+    transform: scale(1.05);
+}
+
+#h-headline::before {
+    content: "-->";
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+}
+
+#h-headline:hover::before {
+    opacity: 1;
+}
+
+#h-headline::after {
+    content: "<--";
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+}
+
+#h-headline:hover::after {
+    opacity: 1;
 }
 
 .grid-ruta {
@@ -179,6 +229,12 @@ h1 {
     margin: 1rem;
     overflow-y: auto;
     padding-right: 0.5rem;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.2s ease;
+}
+
+.blog-container:hover {
+    box-shadow: 0px 15px 30px -5px rgba(255, 255, 255, 0.4)
 }
 
 .blogHeader-container {

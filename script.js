@@ -5,6 +5,7 @@ const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
 const sendButton = document.getElementById("send-button")
 const resetButton = document.getElementById("reset-button")
+const githubIcon = document.getElementById("github-icon")
 
 const blogPosts = []
 let currentUser = ""
@@ -26,6 +27,13 @@ function loadStorage() {
     blogPosts.push(...savedPosts)
     currentUser = localStorage.getItem(USER_STORAGE) || ""
 }
+
+githubIcon.addEventListener("click", () => {
+    githubIcon.classList.add("spin-icon")
+    githubIcon.addEventListener("animationend", () => {
+        githubIcon.classList.remove("spin-icon")
+    })
+})
 
 // Först ta bort gamla och rendera ut nya posts
 function renderAllPosts() {
@@ -116,7 +124,7 @@ formBox.addEventListener("keydown", (e) => {
     }
 })
 
-// Event för namerutan
+// Event för namnrutan
 userBox.addEventListener("submit", (e) => {
     e.preventDefault() 
     const userInput = new FormData(userBox)
