@@ -1,5 +1,3 @@
-// const { createElement } = require("react")
-
 const userBox = document.getElementById("user-form")
 const formBox = document.getElementById("post-form")
 const mainDiv = document.querySelector(".main-container")
@@ -107,7 +105,7 @@ function renderBlogInput(blogPost) {
     const commentButton = document.createElement("button")
     commentButton.type = "button"
     commentButton.className = "comment-button"
-    commentButton.textContent = "Kommentarer"
+    commentButton.textContent = " Visa kommentarer"
 
 
     userName.textContent = `Användare: ${blogPost.author}`

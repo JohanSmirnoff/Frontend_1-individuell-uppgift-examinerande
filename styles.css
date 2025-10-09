@@ -255,4 +255,9 @@ h1 {
     height: 2rem;
 }
 
+.blog-footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
