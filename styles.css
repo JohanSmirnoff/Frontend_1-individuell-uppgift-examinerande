@@ -73,28 +73,6 @@ header {
     transform: scale(1.05);
 }
 
-#h-headline::before {
-    content: "-->";
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    padding: 1rem;
-}
-
-#h-headline:hover::before {
-    opacity: 1;
-}
-
-#h-headline::after {
-    content: "<--";
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    padding: 1rem;
-}
-
-#h-headline:hover::after {
-    opacity: 1;
-}
-
 .grid-ruta {
     border: 1px solid black;
 }
@@ -227,8 +205,6 @@ h1 {
     background: #272e29;
     padding: 1rem;
     margin: 1rem;
-    overflow-y: auto;
-    padding-right: 0.5rem;
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
     transition: box-shadow 0.2s ease;
 }
@@ -237,17 +213,22 @@ h1 {
     box-shadow: 0px 15px 30px -5px rgba(255, 255, 255, 0.4)
 }
 
-.blogHeader-container {
+.blog-header-container, .blog-footer-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0;
 }
 
-.blogHeader-container p {
+.blog-header-container p {
     display: inline;
     font-weight: bold;
-    /* margin: 0.5rem; */
+}
+
+.blog-article-container {
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    
 }
 
 #remove-post-button {
@@ -256,8 +237,7 @@ h1 {
 }
 
 .blog-footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: auto;
+    padding: 0.6rem 0 0.2rem 0;
 }
 

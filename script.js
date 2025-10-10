@@ -80,7 +80,7 @@ function renderBlogInput(blogPost) {
     blogDiv.className = "blog-container"
 
     const blogHeaderDiv = document.createElement("div")
-    blogHeaderDiv.className = "blogHeader-container"
+    blogHeaderDiv.className = "blog-header-container"
 
     const removePostButton = document.createElement("button")
     removePostButton.className = "remove-post-button"
@@ -88,6 +88,9 @@ function renderBlogInput(blogPost) {
     removePostButton.dataset.id = blogPost.id
     removePostButton.textContent = "X"
     removePostButton.hidden = blogPost.author !== currentUser
+
+    const blogArticleDiv = document.createElement("div")
+    blogArticleDiv.className = "blog-article-container"
     
     const timeStamp = document.createElement("p")
     const userName = document.createElement("p")
@@ -95,7 +98,7 @@ function renderBlogInput(blogPost) {
     const userMessage = document.createElement("p")
 
     const blogFooterDiv = document.createElement("div")
-    blogFooterDiv.className = "blogFooter-container"
+    blogFooterDiv.className = "blog-footer-container"
 
     const likeButton = document.createElement("button")
     likeButton.type = "button"
@@ -106,7 +109,6 @@ function renderBlogInput(blogPost) {
     commentButton.type = "button"
     commentButton.className = "comment-button"
     commentButton.textContent = " Visa kommentarer"
-
 
     userName.textContent = `Användare: ${blogPost.author}`
     userTitle.textContent = `Titel: ${blogPost.title}`
@@ -121,7 +123,7 @@ function renderBlogInput(blogPost) {
         }
         const postIndex = blogPosts.findIndex(p => p.id === blogPost.id)
         if (postIndex === -1) return
-        if (!confirm("Vill du verkligen ta bort inlägget?")) return
+        if (!confirm("Vill du verkligen ta bort ditt inlägget?")) return
         blogPosts.splice(postIndex, 1)
         saveStorage()
         renderAllPosts()
@@ -143,10 +145,16 @@ function renderBlogInput(blogPost) {
         renderAllPosts()
     })
 
-    mainDiv.prepend(blogDiv)
+    // Event för att visa kommentarer.
+    commentButton.addEventListener("click", () => {
+        
+    })
+
     blogHeaderDiv.prepend(timeStamp, removePostButton)
+    blogArticleDiv.prepend(userName, userTitle, userMessage)
     blogFooterDiv.prepend(likeButton, commentButton)
-    blogDiv.prepend(blogHeaderDiv, userName, userTitle, userMessage, blogFooterDiv)
+    blogDiv.prepend(blogHeaderDiv, blogArticleDiv, blogFooterDiv)
+    mainDiv.prepend(blogDiv)
 }
 
 // En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda.
