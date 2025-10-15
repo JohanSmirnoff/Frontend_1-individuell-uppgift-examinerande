@@ -60,6 +60,18 @@ function hideDiv(div) {
     })
 }
 
+// Funktion för att updatera like-knappen med en classlist toggle, kontrollerar om currentUser har likeat eller inte
+function updateLike(button, post, currentUser) {
+    const count = post.likedBy.length
+    const haveLiked = currentUser && post.likedBy.includes(currentUser)
+
+    button.classList.toggle("liked", Boolean(haveLiked))
+    button.setAttribute("aria-pressed", String(Boolean(haveLiked)))
+
+    const countEl = button.querySelector(".count")
+    if (countEl) countEl.textContent = String(count)
+}
+
 // Funktion för att bara sätta username
 function addUserInput(addUserName) {
     return {
@@ -120,6 +132,7 @@ function renderBlogInput(blogPost) {
     const userName = document.createElement("p")
     const userTitle = document.createElement("p")
     const userMessage = document.createElement("p")
+    userMessage.className = "user-message"
 
     const blogFooterDiv = document.createElement("div")
     blogFooterDiv.className = "blog-footer-container"
@@ -127,7 +140,14 @@ function renderBlogInput(blogPost) {
     const likeButton = document.createElement("button")
     likeButton.type = "button"
     likeButton.className = "like-button"
-    likeButton.textContent = `<3: ${blogPost.likedBy.length}`
+    likeButton.setAttribute("aria-pressed", "false");
+    likeButton.innerHTML = `
+        <svg class="heart" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="count">0</span>`
+    
+    updateLike(likeButton, blogPost, currentUser)
 
     const commentButton = document.createElement("button")
     commentButton.type = "button"
@@ -201,7 +221,7 @@ function renderBlogInput(blogPost) {
         } else {
             blogPost.likedBy.splice(likes, 1)
         }
-        likeButton.textContent = `<3: ${blogPost.likedBy.length}`
+        updateLike(likeButton, blogPost, currentUser)
         saveStorage()
     })
 
@@ -234,7 +254,7 @@ function renderBlogInput(blogPost) {
         }
 
         blogPost.comments.push(newComment)
-        commentList.appendChild(renderCommentInput(blogPost, newComment))
+        commentList.prepend(renderCommentInput(blogPost, newComment))
         saveStorage()
         commentForm.reset()
 
@@ -254,7 +274,7 @@ function renderBlogInput(blogPost) {
     commentFormDiv.appendChild(commentForm)
     commentDiv.append(commentSectionDiv, commentFormDiv)
 
-    blogDiv.prepend(blogHeaderDiv, blogArticleDiv, blogFooterDiv, commentDiv)
+    blogDiv.append(blogHeaderDiv, blogArticleDiv, commentDiv, blogFooterDiv)
 
     mainDiv.prepend(blogDiv)
 }
@@ -267,7 +287,7 @@ function renderCommentInput(post, comment) {
     userComment.dataset.id = comment.id
 
     const commentText = document.createElement("span")
-    commentText.textContent = `${comment.timestamp} - ${comment.author} - ${comment.textOutput}`
+    commentText.textContent = `${comment.timestamp} - ${comment.author}: ${comment.textOutput}`
     
     const removeCommentButton = document.createElement("button")
     removeCommentButton.className = "remove-comment-button"
@@ -328,7 +348,6 @@ formBox.addEventListener("submit", (e) => {
         alert("Skriv in ett användarnamn uppe i högra hörnet och tryck enter för att spara det.")
         return
     }
-
     const formInput = new FormData(formBox)
     const createdBlogPost = addBlogInput(formInput)
     blogPosts.push(createdBlogPost)
