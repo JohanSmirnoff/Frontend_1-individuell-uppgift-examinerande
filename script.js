@@ -26,6 +26,7 @@ function loadStorage() {
     currentUser = localStorage.getItem(USER_STORAGE) || ""
 }
 
+// Animation på github-ikonen
 githubIcon.addEventListener("click", () => {
     githubIcon.classList.add("spin-icon")
     githubIcon.addEventListener("animationend", () => {
@@ -33,13 +34,14 @@ githubIcon.addEventListener("click", () => {
     }, { once: true})
 })
 
-// KANSKE ÄNDRA DENNA FUNKTION TILL .replaceChildren I FRAMTIDEN
+// Rendera om allt innehåll
 function renderAllPosts() {
     mainDiv.querySelectorAll(".blog-container").forEach(element => element.remove())
     blogPosts.slice().forEach(renderBlogInput)
     if (currentUser) renderUserInput({author: currentUser})
 }
 
+// Två funktioner för att visa och dölja kommentarsrutan
 function showDiv(div) {
     div.style.height = div.scrollHeight + "px"
     div.dataset.open = "true"
@@ -60,7 +62,7 @@ function hideDiv(div) {
     })
 }
 
-// Funktion för att updatera like-knappen med en classlist toggle, kontrollerar om currentUser har likeat eller inte
+// Funktion för att updatera like-knappen med en classlist toggle
 function updateLike(button, post, currentUser) {
     const count = post.likedBy.length
     const haveLiked = currentUser && post.likedBy.includes(currentUser)
@@ -72,7 +74,7 @@ function updateLike(button, post, currentUser) {
     if (countEl) countEl.textContent = String(count)
 }
 
-// Funktion för att bara sätta username
+// Funktion för att bara sätta username i hörnet
 function addUserInput(addUserName) {
     return {
         author: String(addUserName.get("user-name") ?? "").trim()
@@ -84,13 +86,13 @@ function renderUserInput(renderUserName) {
     let userDisplay = document.getElementById("user-display")
     if (!userDisplay) {
         userDisplay = document.createElement("p")
-        userDisplay.id ="user-display"
+        userDisplay.id = "user-display"
         userBox.appendChild(userDisplay)
     }
     userDisplay.textContent = renderUserName.author
 }
 
-// En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
+// En funktion för att skicka in userinput i arrayen blogPosts
 function addBlogInput(blogInfo) {
     const title = String(blogInfo.get("user-title") ?? "").trim()
     const message = String(blogInfo.get("user-message") ?? "").trim()
@@ -111,7 +113,7 @@ function renderBlogInput(blogPost) {
     blogPost.likedBy ??= [];
     blogPost.comments ??= [];
 
-    // Själva bloginlägget
+    // Själva blogginlägget
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
@@ -237,7 +239,7 @@ function renderBlogInput(blogPost) {
         }
     })
 
-    // Submit event för kommentarer, pushar till arrayen. Sista raden ändrar om height på rutan om den är öppen.
+    // Submit event för kommentarer, pushar till arrayen. Sista delen ändrar om height på rutan om den är öppen.
     commentForm.addEventListener("submit", (e) => {
         e.preventDefault()
         if (!currentUser) {
