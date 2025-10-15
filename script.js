@@ -63,7 +63,7 @@ function hideDiv(div) {
 // Funktion för att bara sätta username
 function addUserInput(addUserName) {
     return {
-        author: addUserName.get("user-name").toString().trim()
+        author: String(addUserName.get("user-name") ?? "").trim()
     }
 }
 
@@ -80,11 +80,14 @@ function renderUserInput(renderUserName) {
 
 // En funktion för att skicka in userinput i arrayen blogPosts, (trimma till små bokstäver senare?) 
 function addBlogInput(blogInfo) {
+    const title = String(blogInfo.get("user-title") ?? "").trim()
+    const message = String(blogInfo.get("user-message") ?? "").trim()
+    
     return {
         id: crypto.randomUUID(),
         author: currentUser,
-        title: blogInfo.get("user-title"),
-        message: blogInfo.get("user-message"),
+        title,
+        message,
         timestamp: new Date().toLocaleString(),
         likedBy: [],
         comments: []
@@ -156,6 +159,7 @@ function renderBlogInput(blogPost) {
     commentLabel.textContent = "Kommentar"
 
     const commentTextInput = document.createElement("textarea")
+    commentTextInput.setAttribute("aria-label", "Kommentar")
     commentTextInput.rows = "2"
     commentTextInput.className = "text-area"
     commentTextInput.placeholder = "Skriv din kommentar..."
@@ -320,15 +324,12 @@ userBox.addEventListener("submit", (e) => {
 // Eventlistener för formuläret du fyller i för själva inläggen
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
-    const formInput = new FormData(formBox)
-    // const author = formInput.get("user-name")
-    // const title = (formInput.get("user-title") || "")
-    // const message = (formInput.get("user-message") || "")
-    
     if (!currentUser) {
         alert("Skriv in ett användarnamn uppe i högra hörnet och tryck enter för att spara det.")
         return
     }
+
+    const formInput = new FormData(formBox)
     const createdBlogPost = addBlogInput(formInput)
     blogPosts.push(createdBlogPost)
     renderBlogInput(createdBlogPost)
