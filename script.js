@@ -8,7 +8,7 @@ const githubIcon = document.getElementById("github-icon")
 const blogPosts = []
 let currentUser = ""
 
-// Start på localstorage
+// Variabler på localstorage
 const BLOG_STORAGE = "blogPosts"
 const USER_STORAGE = "currentUser"
 
@@ -30,16 +30,34 @@ githubIcon.addEventListener("click", () => {
     githubIcon.classList.add("spin-icon")
     githubIcon.addEventListener("animationend", () => {
         githubIcon.classList.remove("spin-icon")
-    })
+    }, { once: true})
 })
-
-// Först ta bort gamla och rendera ut nya posts
 
 // KANSKE ÄNDRA DENNA FUNKTION TILL .replaceChildren I FRAMTIDEN
 function renderAllPosts() {
     mainDiv.querySelectorAll(".blog-container").forEach(element => element.remove())
     blogPosts.slice().forEach(renderBlogInput)
     if (currentUser) renderUserInput({author: currentUser})
+}
+
+function showDiv(div) {
+    div.style.height = div.scrollHeight + "px"
+    div.dataset.open = "true"
+    div.addEventListener("transitionend", function end(e) {
+        if (e.propertyName !== "height") return
+        div.style.height = "auto"
+        div.removeEventListener("transitionend", end)
+    })
+}
+
+function hideDiv(div) {
+    if (div.style.height === "auto") {
+        div.style.height = div.scrollHeight + "px"
+    }
+    requestAnimationFrame(() => {
+        div.style.height = "0px"
+        div.dataset.open = "false"
+    })
 }
 
 // Funktion för att bara sätta username
@@ -67,15 +85,18 @@ function addBlogInput(blogInfo) {
         author: currentUser,
         title: blogInfo.get("user-title"),
         message: blogInfo.get("user-message"),
-        timestamp: new Date().toLocaleTimeString(),
-        likedBy: []
+        timestamp: new Date().toLocaleString(),
+        likedBy: [],
+        comments: []
     }
 }
 
 // Funktion för att rendera och skapa alla element som behövs för att få nån output i HTML
 function renderBlogInput(blogPost) {
     blogPost.likedBy ??= [];
+    blogPost.comments ??= [];
 
+    // Själva bloginlägget
     const blogDiv = document.createElement("div")
     blogDiv.className = "blog-container"
 
@@ -108,14 +129,49 @@ function renderBlogInput(blogPost) {
     const commentButton = document.createElement("button")
     commentButton.type = "button"
     commentButton.className = "comment-button"
-    commentButton.textContent = " Visa kommentarer"
+    commentButton.textContent = "Visa kommentarer"
+
+    //Start på kommentarerna
+    const commentDiv = document.createElement("div")
+    commentDiv.className = "comments-container"
+    commentDiv.dataset.open = "false"
+    commentDiv.style.height = "0px"
+    
+    const commentSectionDiv = document.createElement("div")
+    commentSectionDiv.className = "user-comments-container"
+
+    const commentList = document.createElement("ul")
+    commentList.className = "comment-list" 
+
+    blogPost.comments.forEach(comment => commentList.appendChild(renderCommentInput(blogPost, comment)))
+
+    // Start på form för kommentarerna
+    const commentFormDiv = document.createElement("div")
+    commentFormDiv.className = "comment-form-container"
+
+    const commentForm = document.createElement("form")
+    commentForm.className = "comment-form"
+
+    const commentLabel = document.createElement("label")
+    commentLabel.textContent = "Kommentar"
+
+    const commentTextInput = document.createElement("textarea")
+    commentTextInput.rows = "2"
+    commentTextInput.className = "text-area"
+    commentTextInput.placeholder = "Skriv din kommentar..."
+    commentTextInput.required = true
+
+    const postCommentButton = document.createElement("button")
+    postCommentButton.type = "submit"
+    postCommentButton.className = "post-comment-button"
+    postCommentButton.textContent = "Skicka"
 
     userName.textContent = `Användare: ${blogPost.author}`
     userTitle.textContent = `Titel: ${blogPost.title}`
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
 
-    // Eventlistener för removePostButton-knappen inuti renderBlogInput
+    // Event för removePostButton-knappen, använder blogPosts.findIndex för att leta i arrayen. splice för att ta bort
     removePostButton.addEventListener("click", () => {
         if (blogPost.author !== currentUser) {
             alert("Du kan inte ta bort andras inlägg, duh!")
@@ -123,13 +179,13 @@ function renderBlogInput(blogPost) {
         }
         const postIndex = blogPosts.findIndex(p => p.id === blogPost.id)
         if (postIndex === -1) return
-        if (!confirm("Vill du verkligen ta bort ditt inlägget?")) return
+        if (!confirm("Vill du verkligen ta bort ditt inlägg?")) return
         blogPosts.splice(postIndex, 1)
         saveStorage()
         renderAllPosts()
     })
 
-    // Event för likes, använder blogPost.likedBy.indexOf för att leta efter currentUser i arrayen. Push om ej hittad, annars splice
+    // Event för likes, använder blogPost.likedBy.indexOf för att leta efter currentUser i arrayen likedBy. Push om ej hittad, annars splice
     likeButton.addEventListener("click", () => {
         if (!currentUser) {
             alert("Fyll i ett användarnamn och tryck enter innan du like:ar")
@@ -141,25 +197,100 @@ function renderBlogInput(blogPost) {
         } else {
             blogPost.likedBy.splice(likes, 1)
         }
+        likeButton.textContent = `<3: ${blogPost.likedBy.length}`
         saveStorage()
-        renderAllPosts()
     })
 
-    // Event för att visa kommentarer.
+    // Event för att köra funktionerna för visa/dölja commentDiven.
     commentButton.addEventListener("click", () => {
-        
+        const isOpen = commentDiv.dataset.open === "true"
+        if (isOpen) {
+            commentButton.textContent = "Visa kommentarer"
+            hideDiv(commentDiv)
+        } else {
+            commentButton.textContent = "Dölj kommentarer"
+            showDiv(commentDiv)
+        }
+    })
+
+    // Submit event för kommentarer, pushar till arrayen. Sista raden ändrar om height på rutan om den är öppen.
+    commentForm.addEventListener("submit", (e) => {
+        e.preventDefault()
+        if (!currentUser) {
+            alert("Skriv in ett användarnamn INNAN du kommenterar...")
+            return
+        }
+        const textOutput = commentTextInput.value.trim()
+        if (!textOutput) return
+        const newComment = {
+            id: crypto.randomUUID(),
+            author: currentUser,
+            textOutput,
+            timestamp: new Date().toLocaleString()
+        }
+
+        blogPost.comments.push(newComment)
+        commentList.appendChild(renderCommentInput(blogPost, newComment))
+        saveStorage()
+        commentForm.reset()
+
+        if (commentDiv.dataset.open === "true") {
+            commentDiv.style.height = "auto"
+            const height = commentDiv.scrollHeight
+            commentDiv.style.height = height + "px"
+        }
     })
 
     blogHeaderDiv.prepend(timeStamp, removePostButton)
     blogArticleDiv.prepend(userName, userTitle, userMessage)
     blogFooterDiv.prepend(likeButton, commentButton)
-    blogDiv.prepend(blogHeaderDiv, blogArticleDiv, blogFooterDiv)
+    
+    commentSectionDiv.appendChild(commentList)
+    commentForm.append(commentLabel, commentTextInput, postCommentButton)
+    commentFormDiv.appendChild(commentForm)
+    commentDiv.append(commentSectionDiv, commentFormDiv)
+
+    blogDiv.prepend(blogHeaderDiv, blogArticleDiv, blogFooterDiv, commentDiv)
+
     mainDiv.prepend(blogDiv)
 }
 
-// En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda.
+// Funktion för att rendera kommentarerna, removeComment-event fungerar på samma sätt som removePost-event
+function renderCommentInput(post, comment) {
+    post.comments ??= []
+    const userComment = document.createElement("li")
+    userComment.className = "user-comment"
+    userComment.dataset.id = comment.id
+
+    const commentText = document.createElement("span")
+    commentText.textContent = `${comment.timestamp} - ${comment.author} - ${comment.textOutput}`
+    
+    const removeCommentButton = document.createElement("button")
+    removeCommentButton.className = "remove-comment-button"
+    removeCommentButton.type = "button"
+    removeCommentButton.textContent = "X"
+    removeCommentButton.hidden = comment.author !== currentUser
+
+    removeCommentButton.addEventListener("click", () => {
+        if (comment.author !== currentUser) {
+            alert("Yo! Du kan inte ta bort andras kommentarer!")
+            return
+        }
+        const commentIndex = post.comments.findIndex(i => i.id === comment.id)
+        if (commentIndex === -1) return
+        if (!confirm("Vill du verkligen ta bort din kommentar?")) return
+        post.comments.splice(commentIndex, 1)
+        userComment.remove()
+        saveStorage()
+    })
+
+    userComment.append(commentText, removeCommentButton)
+    return userComment
+}
+
+// En till funktion för att trigga submit i formuläret vid keydown "enter" och alla fält är ifyllda, shift+enter gör fortfarande radbrytning.
 formBox.addEventListener("keydown", (e) => {
-    if (e.key == "Enter" && e.target.tagName === "TEXTAREA") {
+    if (e.key == "Enter" && e.target.tagName === "TEXTAREA" && !e.shiftKey) {
         e.preventDefault()
         formBox.requestSubmit()
     }
@@ -190,9 +321,9 @@ userBox.addEventListener("submit", (e) => {
 formBox.addEventListener("submit", (e) => {
     e.preventDefault()
     const formInput = new FormData(formBox)
-    const author = formInput.get("user-name")
-    const title = (formInput.get("user-title") || "")
-    const message = (formInput.get("user-message") || "")
+    // const author = formInput.get("user-name")
+    // const title = (formInput.get("user-title") || "")
+    // const message = (formInput.get("user-message") || "")
     
     if (!currentUser) {
         alert("Skriv in ett användarnamn uppe i högra hörnet och tryck enter för att spara det.")
@@ -209,7 +340,3 @@ formBox.addEventListener("submit", (e) => {
 loadStorage()
 renderAllPosts()
 console.log(blogPosts)
-
-
-
-

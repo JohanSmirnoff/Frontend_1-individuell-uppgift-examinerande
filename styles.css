@@ -231,7 +231,7 @@ h1 {
     
 }
 
-#remove-post-button {
+.remove-post-button, .remove-comment-button {
     width: 2rem;
     height: 2rem;
 }
@@ -239,5 +239,16 @@ h1 {
 .blog-footer-container {
     margin-top: auto;
     padding: 0.6rem 0 0.2rem 0;
+}
+
+.comments-container {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.comment-list {
+    list-style: none;
 }
 
