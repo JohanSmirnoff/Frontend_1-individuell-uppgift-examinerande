@@ -289,7 +289,7 @@ function renderCommentInput(post, comment) {
     userComment.dataset.id = comment.id
 
     const commentText = document.createElement("span")
-    commentText.textContent = `${comment.timestamp} - ${comment.author}: ${comment.textOutput}`
+    commentText.innerHTML = `${comment.timestamp} - ${comment.author}:<br>${comment.textOutput}`
     
     const removeCommentButton = document.createElement("button")
     removeCommentButton.className = "remove-comment-button"
