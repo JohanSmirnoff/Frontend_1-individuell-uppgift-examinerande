@@ -18,7 +18,7 @@ header {
     border-bottom: 1px solid orange;
     background: linear-gradient(180deg, rgba(191, 113, 44, 0.5), rgba(44, 191, 149, 0.5) 80%);
     backdrop-filter: blur(5px);
-    box-shadow: 0 20px 40px -10px rgba(187, 94, 31, 0.7)
+    box-shadow: 0 20px 40px -10px rgba(187, 94, 31, 0.7);
 }
 
 .header-container {
@@ -66,7 +66,7 @@ header {
 #h-headline {
     font-family: "Kings", Helvetica, sans-serif;
     padding-top: 0.6rem;
-    transition: transform 0.3s ease-in-out
+    transition: transform 0.3s ease-in-out;
 }
 
 #h-headline:hover {
@@ -149,7 +149,6 @@ h1 {
     flex-direction: column;
     justify-content: center;
     background-color: black;
-    text-decoration: inherit;
     color: white;
 }
 
@@ -165,7 +164,7 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     padding: 2rem;
-    width: 100%
+    width: 100%;
 }
 
 .blog-container {
@@ -261,7 +260,6 @@ h1 {
     flex-direction: column;
     flex: 0 0 auto;
     height: 0;
-    /* min-height: 0; */
     overflow: hidden;
     transition: height 0.3s ease;
     border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -284,7 +282,6 @@ h1 {
     min-height: 0;
     max-height: 300px;
     overflow-y: auto;
-    padding-right: 0.5rem;
 }
 
 .user-comment {
@@ -405,7 +402,6 @@ h1 {
 
 @media (max-width: 768px) {
     .form-container form {
-        flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
         border-radius: 1rem;
@@ -428,7 +424,6 @@ h1 {
 
 @media (max-width: 600px) {
     #grid-row1, #grid-row2, #grid-row3 {
-        display: grid;
         grid-template-columns: 1fr;
     }
 
