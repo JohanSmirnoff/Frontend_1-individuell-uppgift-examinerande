@@ -195,6 +195,29 @@ h1 {
 .blog-header-container p {
     display: inline;
     font-weight: bold;
+    font-size: 1.3rem;
+    margin: 0.7rem 0;
+}
+
+.timestamp-p {
+    font-style: italic;
+}
+
+.timestamp-p, .username-p {
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+}
+
+.usermessage-p {
+    margin: 1.2rem 0;
+}
+
+.comment-time {
+    font-style: italic;
+}
+
+.comment-author {
+    font-weight: bold;
 }
 
 .blog-article-container {
@@ -205,13 +228,17 @@ h1 {
 }
 
 .remove-post-button, .remove-comment-button {
-    width: 2rem;
-    height: 2rem;
+    width: 2.2rem;
+    height: 2.2rem;
     background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.7rem;
     color: #fff;
     cursor: pointer;
+    margin: 0 0 0 0.5rem;
+    align-self: flex-start;
+    flex: 0 0 auto;
+    justify-self: end;
 }
 
 .remove-post-button:hover, .remove-comment-button:hover {

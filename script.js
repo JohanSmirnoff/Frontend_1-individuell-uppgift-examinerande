@@ -131,10 +131,13 @@ function renderBlogInput(blogPost) {
     blogArticleDiv.className = "blog-article-container"
     
     const timeStamp = document.createElement("p")
+    timeStamp.className = "timestamp-p"
     const userName = document.createElement("p")
+    userName.className = "username-p"
     const userTitle = document.createElement("p")
+    userTitle.className = "usertitle-p"
     const userMessage = document.createElement("p")
-    userMessage.className = "user-message"
+    userMessage.className = "usermessage-p"
 
     const blogFooterDiv = document.createElement("div")
     blogFooterDiv.className = "blog-footer-container"
@@ -193,7 +196,7 @@ function renderBlogInput(blogPost) {
     postCommentButton.textContent = "Skicka"
 
     userName.textContent = `Användare: ${blogPost.author}`
-    userTitle.textContent = `Titel: ${blogPost.title}`
+    userTitle.textContent = blogPost.title
     userMessage.textContent = blogPost.message
     timeStamp.textContent = blogPost.timestamp
 
@@ -267,8 +270,8 @@ function renderBlogInput(blogPost) {
         }
     })
 
-    blogHeaderDiv.prepend(timeStamp, removePostButton)
-    blogArticleDiv.prepend(userName, userTitle, userMessage)
+    blogHeaderDiv.prepend(userTitle, removePostButton)
+    blogArticleDiv.prepend(timeStamp, userName, userMessage)
     blogFooterDiv.prepend(likeButton, commentButton)
     
     commentSectionDiv.appendChild(commentList)
@@ -288,8 +291,25 @@ function renderCommentInput(post, comment) {
     userComment.className = "user-comment"
     userComment.dataset.id = comment.id
 
+    const commentTime = document.createElement("time")
+    commentTime.className = "comment-time"
+    commentTime.textContent = comment.timestamp
+
+    const sep = document.createTextNode(" - ")
+
+    const commentAuthor = document.createElement("span")
+    commentAuthor.className = "comment-author"
+    commentAuthor.textContent = comment.author + ":"
+
+    const br = document.createElement("br")
+
     const commentText = document.createElement("span")
-    commentText.innerHTML = `${comment.timestamp} - ${comment.author}:<br>${comment.textOutput}`
+    commentText.className = "comment-text"
+    commentText.textContent = comment.textOutput
+
+    const commentSpan = document.createElement("span")
+
+    commentSpan.append(commentTime, sep, commentAuthor, br, commentText)
     
     const removeCommentButton = document.createElement("button")
     removeCommentButton.className = "remove-comment-button"
@@ -310,7 +330,7 @@ function renderCommentInput(post, comment) {
         saveStorage()
     })
 
-    userComment.append(commentText, removeCommentButton)
+    userComment.append(commentSpan, removeCommentButton)
     return userComment
 }
 
