@@ -219,6 +219,11 @@ h1 {
     font-weight: bold;
 }
 
+.comment-text {
+    display: block;
+    margin: 1rem 0 0 0;
+}
+
 .blog-article-container {
     flex: 1 1 auto;
     overflow-y: auto;
